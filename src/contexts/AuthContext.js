@@ -69,6 +69,12 @@ const AuthProvider = ({ children }) => {
             type: INITIALIZE,
             payload: { isAuthenticated: true, user },
           });
+        } else {
+          setSession(null);
+          dispatch({
+            type: INITIALIZE,
+            payload: { isAuthenticated: false, user: null },
+          });
         }
       } catch (error) {
         setSession(null);
@@ -78,6 +84,7 @@ const AuthProvider = ({ children }) => {
         });
       }
     };
+    initialize();
   }, []);
 
   const login = async ({ email, password }, callback) => {
