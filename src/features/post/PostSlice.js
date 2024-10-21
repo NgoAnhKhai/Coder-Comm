@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 const initialState = {
-  posts: [],
   isLoading: false,
   error: null,
 };
@@ -23,7 +22,7 @@ const slice = createSlice({
       const newPost = action.payload;
       state.posts.unshifth(newPost);
     },
-    getPostSuccess(state, action) {
+    getPostsSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
       state.post = action.payload.posts;
@@ -57,7 +56,7 @@ export const getPosts =
         params,
       });
 
-      dispatch(slice.actions.getPostSuccess(res.data));
+      dispatch(slice.actions.getPostsSuccess(res.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
     }
