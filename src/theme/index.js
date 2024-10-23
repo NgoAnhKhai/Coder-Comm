@@ -4,7 +4,7 @@ import {
   createTheme,
   ThemeProvider as MUIThemeProvider,
 } from "@mui/material/styles";
-import customizeComponents from "./customization";
+import customizeComponents from "./customizations";
 
 const PRIMARY = {
   lighter: "#C8FACD",

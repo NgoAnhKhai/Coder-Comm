@@ -7,12 +7,14 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import PersonAddRoundedIcon from "@mui/icons-material/PersonAddRounded";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { capitalCase } from "change-case";
+
 import Profile from "../features/user/Profile";
-import FriendList from "../features/friend/FriendList";
-import AddFriend from "../features/friend/AddFriend";
-import FriendRequest from "../features/friend/FriendRequest";
 import ProfileCover from "../features/user/ProfileCover";
+import { capitalCase } from "change-case";
+import AddFriend from "../features/friend/AddFriend";
+import FriendRequests from "../features/friend/FriendRequest";
+import FriendList from "../features/friend/FriendList";
+
 const TabsWrapperStyle = styled("div")(({ theme }) => ({
   zIndex: 9,
   bottom: 0,
@@ -51,7 +53,7 @@ function HomePage() {
     {
       value: "requests",
       icon: <ContactMailIcon sx={{ fontSize: 24 }} />,
-      component: <FriendRequest />,
+      component: <FriendRequests />,
     },
     {
       value: "add_friend",

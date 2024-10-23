@@ -1,7 +1,6 @@
-import { Stack } from "@mui/material";
-import React from "react";
 import { Outlet } from "react-router-dom";
 import Logo from "../components/logo";
+import { Stack } from "@mui/material";
 
 function BlankLayout() {
   return (
