@@ -13,8 +13,6 @@ import { Avatar, Divider } from "@mui/material";
 function MainHeader() {
   const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
