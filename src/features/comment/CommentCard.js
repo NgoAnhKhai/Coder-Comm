@@ -1,17 +1,10 @@
 import React from "react";
-import {
-  Avatar,
-  Box,
-  Paper,
-  Stack,
-  Typography,
-  IconButton,
-} from "@mui/material";
+import { Avatar, Paper, Stack, Typography, IconButton } from "@mui/material";
 import { fDate } from "../../utils/formatTime";
 import CommentReaction from "./CommentReaction";
 import { useDispatch } from "react-redux";
-import DeleteIcon from "@mui/icons-material/Delete"; // Import icon Delete
-import { deleteComment } from "./commentSlice"; // Import action xóa bình luận
+import DeleteIcon from "@mui/icons-material/Delete";
+import { deleteComment } from "./commentSlice";
 
 function CommentCard({ comment }) {
   const dispatch = useDispatch();
@@ -49,7 +42,6 @@ function CommentCard({ comment }) {
           alignItems="center"
         >
           <CommentReaction comment={comment} />
-          {/* Nút xóa bình luận */}
           <IconButton onClick={handleDeleteComment}>
             <DeleteIcon />
           </IconButton>
