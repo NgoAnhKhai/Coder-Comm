@@ -1,4 +1,8 @@
-import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from "../app/config";
+import {
+  CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_UPLOAD_PRESET,
+  CLOUDINARY_API_KEY,
+} from "../app/config";
 import axios from "axios";
 
 export const cloudinaryUpload = async (image) => {
@@ -7,6 +11,7 @@ export const cloudinaryUpload = async (image) => {
     const formData = new FormData();
     formData.append("file", image);
     formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
     const response = await axios({
       url: `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
       method: "POST",
@@ -16,6 +21,7 @@ export const cloudinaryUpload = async (image) => {
     const imageUrl = response.data.secure_url;
     return imageUrl;
   } catch (error) {
+    console.error("Error uploading to Cloudinary:", error);
     throw error;
   }
 };

@@ -59,6 +59,22 @@ const slice = createSlice({
       const { postId, reactions } = action.payload;
       state.postsById[postId].reactions = reactions;
     },
+    deletePostSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const postId = action.payload;
+      delete state.postsById[postId];
+      state.currentPagePosts = state.currentPagePosts.filter(
+        (id) => id !== postId
+      );
+    },
+
+    updatePostSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const updatedPost = action.payload;
+      state.postsById[updatedPost._id] = updatedPost;
+    },
   },
 });
 
@@ -86,7 +102,6 @@ export const createPost =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      // upload image to cloudinary
       const imageUrl = await cloudinaryUpload(image);
       const response = await apiService.post("/posts", {
         content,
@@ -117,6 +132,37 @@ export const sendPostReaction =
           reactions: response.data,
         })
       );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+export const deletePost = (postId) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    await apiService.delete(`/posts/${postId}`);
+    dispatch(slice.actions.deletePostSuccess(postId));
+    toast.success("Post deleted successfully");
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+};
+
+export const updatePost =
+  ({ postId, content, image }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const updateData = { content }; // Chỉ chứa nội dung ban đầu
+      if (image) {
+        const imageUrl = await cloudinaryUpload(image); // Chỉ upload ảnh nếu có
+        updateData.image = imageUrl; // Thêm URL của ảnh vào dữ liệu cần cập nhật
+      }
+
+      const response = await apiService.put(`/posts/${postId}`, updateData); // Gửi dữ liệu lên server
+      dispatch(slice.actions.updatePostSuccess(response.data));
+      toast.success("Cập nhật bài viết thành công");
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

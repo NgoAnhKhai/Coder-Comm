@@ -4,7 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { Typography, Box } from "@mui/material";
 import AddAPhotoRoundedIcon from "@mui/icons-material/AddAPhotoRounded";
 import { styled, alpha } from "@mui/material/styles";
-import RejectionFiles from "./RejectionFiles";
+import RejectionFiles from "../RejectionFiles";
 
 const RootStyle = styled("div")(({ theme }) => ({
   width: 144,

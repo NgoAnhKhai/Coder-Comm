@@ -63,12 +63,15 @@ function HomePage() {
   ];
 
   return (
-    <Container>
+    <Container
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
       <Card
         sx={{
           mb: 3,
           height: 280,
           position: "relative",
+          width: "100%",
         }}
       >
         <ProfileCover profile={user} />
@@ -96,7 +99,13 @@ function HomePage() {
 
       {PROFILE_TABS.map((tab) => {
         const isMatched = tab.value === currentTab;
-        return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+        return (
+          isMatched && (
+            <Box key={tab.value} sx={{ width: "100%" }}>
+              {tab.component}
+            </Box>
+          )
+        );
       })}
     </Container>
   );

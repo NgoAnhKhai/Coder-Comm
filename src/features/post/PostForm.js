@@ -1,22 +1,26 @@
-import React from "react";
-import { FormProvider, FTextField } from "../../components/form";
+import React, { useCallback } from "react";
+import { Box, Card, alpha, Stack } from "@mui/material";
+
+import { FormProvider, FTextField, FUploadImage } from "../../components/form";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { alpha, Box, Card, Stack } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import * as Yup from "yup";
 import { createPost } from "./PostSlice";
-import { useDispatch, useSelector } from "react-redux";
-const yupSchema = yup.object().shape({
-  content: yup.string().required("Content is Required"),
+import { LoadingButton } from "@mui/lab";
+
+const yupSchema = Yup.object().shape({
+  content: Yup.string().required("Content is required"),
 });
 
 const defaultValues = {
   content: "",
-  image: "",
+  image: null,
 };
 
 function PostForm() {
+  const { isLoading } = useSelector((state) => state.post);
+
   const methods = useForm({
     resolver: yupResolver(yupSchema),
     defaultValues,
@@ -28,16 +32,30 @@ function PostForm() {
     formState: { isSubmitting },
   } = methods;
   const dispatch = useDispatch();
+
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+
+      if (file) {
+        setValue(
+          "image",
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
+      }
+    },
+    [setValue]
+  );
+
   const onSubmit = (data) => {
     dispatch(createPost(data)).then(() => reset());
   };
 
-  const { isLoading } = useSelector((state) => state.post);
-
   return (
     <Card sx={{ p: 3 }}>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        {" "}
         <Stack spacing={2}>
           <FTextField
             name="content"
@@ -52,7 +70,14 @@ function PostForm() {
               },
             }}
           />
-          <FTextField name="image" placeholder="Image" />{" "}
+
+          <FUploadImage
+            name="image"
+            accept="image/*"
+            maxSize={3145728}
+            onDrop={handleDrop}
+          />
+
           <Box
             sx={{
               display: "flex",
