@@ -1,16 +1,21 @@
 import React from "react";
-import { Avatar, Box, Card, Typography, Link } from "@mui/material";
+import { Avatar, Box, Card, Typography, Link, Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
 import useAuth from "../../hooks/useAuth";
 import ActionButton from "./ActionButton";
+import { cancelOutgoingRequest } from "./FriendSlice";
+import { useDispatch } from "react-redux";
 
 function UserCard({ profile }) {
+  const dispatch = useDispatch();
   const { user } = useAuth();
   const currentUserId = user._id;
   const { _id: targetUserId, name, avatarUrl, email, friendship } = profile;
-
+  const handleCancelRequest = () => {
+    dispatch(cancelOutgoingRequest(targetUserId));
+  };
   const actionButton = (
     <ActionButton
       currentUserId={currentUserId}
@@ -41,6 +46,11 @@ function UserCard({ profile }) {
         </Box>
       </Box>
       {actionButton}
+      {friendship === "outgoing" && (
+        <Button onClick={handleCancelRequest} color="error">
+          Cancel Request
+        </Button>
+      )}
     </Card>
   );
 }

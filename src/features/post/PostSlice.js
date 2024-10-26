@@ -161,6 +161,7 @@ export const updatePost =
       }
 
       const response = await apiService.put(`/posts/${postId}`, updateData); // Gửi dữ liệu lên server
+      console.log("hi", response.data);
       dispatch(slice.actions.updatePostSuccess(response.data));
       toast.success("Cập nhật bài viết thành công");
     } catch (error) {
